@@ -1,73 +1,75 @@
 import { useEffect, useState } from "react";
 
 export default function GridPattern() {
-    const LENGTH = 15;
-    const HEIGHT = 20;
-    const GAME_SPEED = 1;
-    const [girds, setGrids] = useState(
-        new Array(LENGTH).fill(new Array(HEIGHT).fill(0))
-    );
+    const LENGTH = 20;
+    const HEIGHT = 15;
+    const GAME_SPEED = 2;
+
+    const createEmptyGrid = () =>
+        Array.from({ length: LENGTH }, () => Array(HEIGHT).fill(0));
+
+    const [grids, setGrids] = useState(createEmptyGrid());
 
     function createNewDrop() {
-        setGrids((g) => {
-            const ng = JSON.parse(JSON.stringify(g));
-            const nl = Math.floor(Math.random() * LENGTH);
-            ng[nl][0] = 1;
-            return ng;
+        setGrids((prevGrids) => {
+            const newGrids = prevGrids.map((row) => row.slice());
+            const randomColumn = Math.floor(Math.random() * LENGTH);
+            newGrids[randomColumn][0] = 1;
+            return newGrids;
         });
     }
 
     useEffect(() => {
         createNewDrop();
-        setTimeout(() => {
-            createNewDrop();
-        }, 7000);
-        setTimeout(() => {
-            createNewDrop();
-        }, 2000);
+        const intervals = [
+            setTimeout(createNewDrop, (4 * 1000) / GAME_SPEED),
+            setTimeout(createNewDrop, (2 * 1000) / GAME_SPEED),
+        ];
+
+        return () => intervals.forEach(clearTimeout);
     }, []);
+
     useEffect(() => {
-        const movementDelay: number = Math.round(1000 / GAME_SPEED);
-        console.log({ movementDelay });
+        const gameTickDelay = Math.round(1000 / GAME_SPEED);
 
-        const gameInterval: any = setInterval(
-            () =>
-                setGrids((g) => {
-                    const ng = JSON.parse(JSON.stringify(g));
-                    for (let i = 0; i < LENGTH; i++) {
-                        for (let j = HEIGHT - 1; j >= 0; j--) {
-                            const val = ng[i][j];
-                            if (val > 0) {
-                                ng[i][j] = 0;
+        const gameInterval = setInterval(() => {
+            setGrids((prevGrids) => {
+                const newGrids = structuredClone(prevGrids);
 
-                                const newIndex = j + 1;
-                                if (newIndex < HEIGHT) {
-                                    ng[i][newIndex] = 1;
-                                } else createNewDrop();
+                for (let col = 0; col < LENGTH; col++) {
+                    for (let row = HEIGHT - 1; row >= 0; row--) {
+                        if (newGrids[col][row] > 0) {
+                            newGrids[col][row] = 0;
+
+                            const nextRow = row + 1;
+                            if (nextRow < HEIGHT) {
+                                newGrids[col][nextRow] = 1;
+                            } else {
+                                createNewDrop();
                             }
                         }
                     }
-                    return ng;
-                }),
-            movementDelay
-        );
+                }
+
+                return newGrids;
+            });
+        }, gameTickDelay);
+
+        return () => clearInterval(gameInterval);
     }, []);
+
     return (
         <main className="flex">
-            {girds.map((row, i) => (
-                <div className="flex flex-col">
-                    {row.map((_: any, j: number) => (
-                        <>
-                            {girds[i][j] > 0 ? (
-                                <div className="size-12 border-4 border-red-500">
-                                    {i},{j}
-                                </div>
-                            ) : (
-                                <div className="size-12 border-4 border-slate-500">
-                                    {i},{j}
-                                </div>
-                            )}
-                        </>
+            {grids.map((row, i) => (
+                <div key={i} className="flex flex-col">
+                    {row.map((cell, j) => (
+                        <div
+                            key={j}
+                            className={`size-12 border-4 ${
+                                cell > 0 ? "border-red-500" : "border-slate-500"
+                            }`}>
+                            {i},{j}
+                        </div>
                     ))}
                 </div>
             ))}
