@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
 export enum Themes {
     Neutral = "neutral",
@@ -37,5 +37,10 @@ export function useTheme() {
         clearInterval(intervalRef.current);
         setTheme(theme);
     }
+
+    useMemo(() => {
+        rainbowTheme();
+    }, []);
+
     return { theme, changeTheme, rainbowTheme };
 }

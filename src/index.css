@@ -4,8 +4,18 @@
 @tailwind components;
 @tailwind utilities;
 
+.fill-side::after {
+    content: "";
+    width: 50vw;
+    background-color: inherit;
+    height: 100vh;
+    z-index: -1;
+    right: 0;
+    position: absolute;
+}
+
 :root {
-    background-color: black;
+    background-color: #0a0a0a;
     color: white;
 
     --primary: #dc2626;

@@ -8,7 +8,8 @@ export default function App() {
     const { grids } = useEngine();
 
     return (
-        <main className={`${theme} container mx-auto flex h-svh w-full`}>
+        <main
+            className={`${theme} container mx-auto flex flex-col-reverse lg:flex-row h-svh w-full`}>
             <SideBar changeTheme={changeTheme} rainbowTheme={rainbowTheme} />
             <GridPattern grids={grids} />
         </main>
