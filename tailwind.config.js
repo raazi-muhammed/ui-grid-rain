@@ -6,6 +6,12 @@ export default {
             fontFamily: {
                 sans: ["Aldrich", "sans-serif"],
             },
+            colors: {
+                primary: {
+                    DEFAULT: "var(--primary)",
+                    border: "var(--primary-border)",
+                },
+            },
         },
     },
     plugins: [],

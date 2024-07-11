@@ -7,4 +7,57 @@
 :root {
     background-color: black;
     color: white;
+
+    --primary: #dc2626;
+    --primary-border: "green";
+}
+
+.neutral {
+    --primary: #d1d5db; /* light grey */
+    --primary-border: #d1d5db;
+}
+
+.red {
+    --primary: #dc2626; /* 600 */
+    --primary-border: #ef4444; /* 500 */
+}
+
+.amber {
+    --primary: #d97706; /* amber */
+    --primary-border: #f59e0b;
+}
+
+.lime {
+    --primary: #65a30d; /* lime green */
+    --primary-border: #84cc16;
+}
+
+.emerald {
+    --primary: #059669; /* emerald green */
+    --primary-border: #10b981;
+}
+
+.cyan {
+    --primary: #0891b2;
+    --primary-border: #06b6d4;
+}
+
+.blue {
+    --primary: #2563eb;
+    --primary-border: #3b82f6;
+}
+
+.violet {
+    --primary: #7c3aed;
+    --primary-border: #8b5cf6;
+}
+
+.fuchsia {
+    --primary: #c026d3;
+    --primary-border: #d946ef;
+}
+
+.rose {
+    --primary: #e11d48; /* rose */
+    --primary-border: #f43f5e;
 }
