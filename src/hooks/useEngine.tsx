@@ -14,9 +14,7 @@ export function useEngine() {
     const LENGTH = length;
     const HEIGHT = height;
 
-    const [grids, setGrids] = useState<number[][]>(
-        createEmptyGrid(LENGTH, HEIGHT)
-    );
+    const [grids, setGrids] = useState<number[][]>([[]]);
 
     function createNewDrop() {
         setGrids((prevGrids) => {
@@ -29,14 +27,13 @@ export function useEngine() {
 
     useEffect(() => {
         const gameTickDelay = Math.round(1000 / GAME_SPEED);
-
         const gameInterval = setInterval(() => {
             setGrids((prevGrids) => {
                 const newGrids = structuredClone(prevGrids);
                 const nodeIncrement = 1 / NODE_LENGTH;
                 for (let col = 0; col < LENGTH; col++) {
                     for (let row = HEIGHT - 1; row >= 0; row--) {
-                        let cellValue = newGrids[col][row];
+                        let cellValue = newGrids?.[col]?.[row];
                         if (cellValue > 0) {
                             newGrids[col][row] =
                                 cellValue > nodeIncrement
@@ -58,9 +55,11 @@ export function useEngine() {
         }, gameTickDelay);
 
         return () => clearInterval(gameInterval);
-    }, []);
+    }, [height, length]);
 
     useEffect(() => {
+        setGrids(createEmptyGrid(length, height));
+
         createNewDrop();
         const intervals: any[] = [];
         for (let i = 0; i < NUMBER_OF_NODES - 1; i++) {
@@ -69,7 +68,7 @@ export function useEngine() {
             );
         }
         return () => intervals.forEach(clearTimeout);
-    }, []);
+    }, [length, height]);
 
     return { grids };
 }

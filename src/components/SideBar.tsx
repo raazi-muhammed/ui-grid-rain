@@ -9,24 +9,43 @@ export default function SideBar({
     changeTheme: (theme: Themes) => void;
     rainbowTheme: () => void;
 }) {
-    const { length } = useContext(GridContext);
+    const { setGrid, length, height } = useContext(GridContext);
 
     return (
         <aside className="w-72 flex-shrink-0 bg-neutral-950 p-8">
-            <p>Rows</p>
-            <section className="flex justify-between gap-4 align-middle">
-                <button className="size-10 flex-shrink-0 rounded border-4 border-purple-500 bg-purple-800">
-                    -
-                </button>
-                <p className="grid w-full place-items-center rounded border-4 border-neutral-500 bg-neutral-800">
-                    {length}
-                </p>
-                <button className="size-10 flex-shrink-0 rounded border-4 border-purple-500 bg-purple-800">
-                    +
-                </button>
+            <p>Grid size</p>
+            <section className="grid w-full grid-cols-6 gap-4">
+                {[...new Array(6)].map((_, i) => (
+                    <div className="flex w-full flex-col justify-between gap-4">
+                        {[...new Array(4)].map((_, j) => (
+                            <div
+                                onClick={() => {
+                                    console.log((i + 1) * 5, (j + 1) * 5);
+                                    setGrid({
+                                        length: (i + 1) * 5,
+                                        height: (j + 1) * 5,
+                                    });
+                                }}
+                                style={{
+                                    opacity:
+                                        length <= i * 5 || height <= j * 5
+                                            ? 0.5
+                                            : 1,
+                                }}
+                                className="aspect-square rounded border-2 border-neutral-50 bg-neutral-500 text-transparent">
+                                .
+                            </div>
+                        ))}
+                    </div>
+                ))}
             </section>
-            <section className="flex flex-wrap gap-2 py-8">
-                <button onClick={() => rainbowTheme()}>Random</button>
+            <p className="mt-6">Colors</p>
+            <section className="flex flex-wrap justify-between gap-3">
+                <button
+                    className="h-8 w-full rounded border-2 border-primary-border bg-primary transition-colors duration-1000"
+                    onClick={() => rainbowTheme()}>
+                    Random
+                </button>
                 {Object.values(Themes).map((theme) => (
                     <button
                         className={`${theme} size-8 border-2 border-primary-border rounded bg-primary p-2`}
