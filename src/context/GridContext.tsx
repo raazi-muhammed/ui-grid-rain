@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useState } from "react";
 
 const defaultValues = {
-    length: 25,
+    length: 20,
     height: 15,
     setGrid: ({}: { length: number; height: number }) => {},
 };

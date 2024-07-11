@@ -6,13 +6,13 @@ const createEmptyGrid = (length: number, height: number) => {
 };
 
 export function useEngine() {
-    const GAME_SPEED = 20;
-    const NUMBER_OF_NODES = 6;
-    const NODE_LENGTH = 6;
-
     const { length, height } = useContext(GridContext);
+
     const LENGTH = length;
     const HEIGHT = height;
+    const NUMBER_OF_NODES = Math.floor(length / 2);
+    const GAME_SPEED = Math.floor(height / 2.5) * 5;
+    const NODE_LENGTH = Math.floor(height / 2);
 
     const [grids, setGrids] = useState<number[][]>([[]]);
 
@@ -64,7 +64,10 @@ export function useEngine() {
         const intervals: any[] = [];
         for (let i = 0; i < NUMBER_OF_NODES - 1; i++) {
             intervals.push(
-                setTimeout(createNewDrop, ((i + 1) * 2 * 1000) / GAME_SPEED)
+                setTimeout(
+                    createNewDrop,
+                    ((i + 1) * NODE_LENGTH * 1000) / GAME_SPEED
+                )
             );
         }
         return () => intervals.forEach(clearTimeout);

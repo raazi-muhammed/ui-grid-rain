@@ -56,7 +56,7 @@ export default function SideBar({
                     <button
                         className="col-span-5 h-8 w-full rounded border-2 border-primary-border bg-primary transition-colors duration-1000"
                         onClick={() => rainbowTheme()}>
-                        Random
+                        Rainbow
                     </button>
                     {Object.values(Themes).map((theme) => (
                         <button
